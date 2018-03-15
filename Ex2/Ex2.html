@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Calculation distance</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<style type="text/css">
+		#wrapper {margin:0 auto; padding-top:20px;width:60%;height:300px;background-color: white;position: relative;font-weight: bold}
+		h1 {text-align: center}
+		#point_1, #point_2 {float:left;width:50%}
+		h3 {text-align: center}
+		label {margin:10px}
+		#latitude_1, #longitude_1,#latitude_2, #longitude_2 {width:90%;height:30px;border: 1px solid #e5e5e5;border-radius: 5px;margin:10px;box-shadow: 3px 3px 2px #e5e5e5;background-color:#ffffb2;text-align: right;font-size:1.2em;}
+		.clear {clear:both;}
+		#result {width:65%;height:30px;border: 1px solid #e5e5e5;border-radius: 5px;margin-left:50px;box-shadow: 3px 3px 2px #e5e5e5;background-color:lightblue;text-align: center;font-size:1.3em;font-weight: bold}
+		#btn_submit {background-color:orange;width:33%;color:white;font-size: 1.2em;margin-left: 33%;margin-top:20px;position:absolute;border-radius: 8px;border:2px dashed purple;}
+	</style>
+</head>
+<body>
+	<!-- HTML code -->
+	<div id="wrapper">
+		<h1>Location Input</h1>
+		<div id="point_1">
+			<h3>Point 1</h3>
+			<label>Longitude: </label>
+			<input type="number" id="longitude_1" name="longitude_1" placeholder="101.232">
+			<label>Latitude: </label>
+			<input type="number" id="latitude_1" name="latitude_1" placeholder="92.586">
+		</div>
+		<div id="point_2">
+			<h3>Point 2</h3>
+			<label>Longitude: </label>
+			<input type="number" id="longitude_2" name="longitude_2"  placeholder="101.232">
+			<label>Latitude: </label>
+			<input type="number" id="latitude_2" name="latitude_2" placeholder="92.586">
+		</div>
+		<div class="clear"></div>
+		<label>Result: </label>
+		<input type="" id="result" name="result" readonly="true"><br>
+		<button type="button" id="btn_submit">Get Distance</button>
+	</div>
+
+	<!-- Javascript Code to send data to server-->
+	<script type="text/javascript">
+
+		// Click event to button
+		$('#btn_submit').on('click',function(){
+			var longitude_1 = $('#longitude_1').val();
+			var latitude_1 = $('#latitude_1').val();
+			var longitude_2 = $('#longitude_2').val();
+			var latitude_2 = $('#latitude_2').val();
+			
+			// Alert when input is empty
+			if(latitude_1 == '' || longitude_1 == '' || latitude_2 == '' || longitude_2 == '') {
+				alert("Both Latitude and Longitude need to fill fully!");
+			}
+			//Alert when type wrong longitude and latitude
+			else if (latitude_1 < -180 || latitude_1 > 180 || latitude_2 < -180 || latitude_2 > 180 || 
+				longitude_1 < -180 || longitude_1 > 180 || longitude_2 < -180 || longitude_2 > 180) {
+				alert("Longitude or Latitude is incorrect. It should be in [-180;180]");
+			}
+			//OK -> Run AJAX, send data to Server
+			else {
+				$.ajax({
+					type:'post', //Type can be Post or get or...
+					url:'server.php', //URL of server file
+					data:{longitude_1_server:longitude_1, latitude_1_server:latitude_1,longitude_2_server:longitude_2,latitude_2_server:latitude_2}, //Pass variable to server
+					success: function(response) {
+						$('#result').val(response + ' km'); //Do something with Return value from Server
+					}
+				});
+			}
+		});
+	</script>
+</body>
+</html>
