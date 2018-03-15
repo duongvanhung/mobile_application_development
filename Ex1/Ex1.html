@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cau 1</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<style type="text/css">
+	#wrapper {margin:0 auto; padding-top:20px;width:60%;height:300px;background-color: white;position: relative;font-weight: bold}
+	h1 {text-align: center}
+	h3 {text-align: center}
+	label {margin:10px}
+	#latitude, #longitude {width:90%;height:30px;border: 1px solid #e5e5e5;border-radius: 5px;margin:10px;box-shadow: 3px 3px 2px #e5e5e5;background-color:#ffffb2;text-align: right;font-size:1.2em;}
+	.clear {clear:both;}
+	#result {width:65%;height:30px;border: 1px solid #e5e5e5;border-radius: 5px;margin-left:50px;box-shadow: 3px 3px 2px #e5e5e5;background-color:lightblue;text-align: center;font-size:1.3em;font-weight: bold}
+	#btn_find {background-color:red;width:33%;color:white;font-size: 1.2em;margin-left: 33%;margin-top:20px;position:absolute;border-radius: 8px;border:2px dashed purple;}
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function() {
+  			$('#btn_find').click(function() {
+    			const latitude = $('#latitude').val();
+    			const longitude = $('#longitude').val();
+   			 	let   address ;
+    			const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyC8O4V_Uc9Bk4IvJ7KcXdPoAz4pL-cZtLA`;
+    			$.get(url, function(res,status){
+      				if (res.status === 'OK') address = res.results[0].formatted_address;
+    				})
+      				.done(function() { $('#result').html(`Result: ${address}`)
+      				})
+      				.fail(function(err) { $('#result').html(`Error: ${err.responseJSON.error_message}`
+      				)}
+      			);
+      });
+
+  });
+	</script>
+</head>
+<body>
+	<div id ="wrapper">
+		<h1>Value Input</h1>
+		<div>
+			<label>Latitude: </label>
+			<input type="number" id="latitude" name="latitude" placeholder="10.881784">
+			<label>Longitude: </label>
+			<input type="number" id="longitude" name="longitude" placeholder="106.804496">
+		</div>
+		<div>
+			<div class="clear"></div>
+			<label id="result" name="result">Result: </label><br>
+			<button type="button" id="btn_find">Find</button>
+		</div>
+	</div>		
+</body>
+</html>	
